@@ -1,0 +1,53 @@
+<html>
+<head>
+<title>Timeline</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="js/outtatimeline.js"></script>
+<script src="js/jquery.base64.js"></script>
+<script src="js/jquery.resize.js"></script>
+<style>
+
+
+</style>
+</head>
+<body style="background:#222; font-family: 'Courier New', monospace; color: #FFF">
+
+<h1>Timeline</h1>
+
+<div id="timeline" style="width: 100%; position: absolute; top: 0px; left: 0px;">
+</div>
+
+<div id="loadBtn" onclick="loadNewTracks()" style="position: absolute; bottom: 0; left: 0; background: #3C0; padding: 5px 10px; cursor: pointer">Load new tracks</div>
+
+<script>
+var timeline;
+var t = 0;
+var tMax = 10;
+
+$(function() 
+{ 
+	var track1 = new OuttaTimelineTrack({title:"smile", min: -100, points: [[0,0], [2, -100], [4, 30], [10, 100]], lineStyle: 'fill', dimension: '%', knobRadius: 5});
+	var track2 = new OuttaTimelineTrack({title:"jaw", color: "#159", points: [[0,0], [1, 10], [2, 80], [8, 20]], lineStyle: 5, dimension: '%'});
+	
+    timeline = new OuttaTimeline("timeline", [track1, track2], { trackHeight: 100 });
+	
+	timeline.on('dataChanged', function() { console.log('Global data changed'); timeline.toSaveableObject(); });
+
+});
+
+function loadNewTracks()
+{
+	var track1 = new OuttaTimelineTrack({title:"smile", min: -100, points: [[0,0], [2, -100], [4, 30], [10, 100]], lineStyle: 'fill', dimension: '%', knobRadius: 5});
+	var track2 = new OuttaTimelineTrack({title:"jaw", color: "#159", points: [[0,0], [1, 10], [3, 100], [8, 20]], lineStyle: 5, dimension: '%'});
+	var track3 = new OuttaTimelineTrack({title:"drive", color: "#991", min: -50, points: [[0,40], [2, -40], [3, 30], [5, 10]], lineStyle: 'fill', dimension: '%', knobRadius: 5});
+	var track4 = new OuttaTimelineTrack({title:"motor", color: "#C0C", points: [[0,0], [5,0], [5.1, 100], [5.2, 0], [8, 0]], lineStyle: 5, dimension: '%'});
+	
+	timeline.setTracks([track1, track2, track3, track4]);
+	
+	setInterval(function() { timeline.setTime(t+=0.1); if (t>tMax) t = 0; }, 100);
+	
+}
+</script>
+
+</body>
+</html>
